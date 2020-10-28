@@ -1,0 +1,49 @@
+<%- include("partials/header"); -%>
+
+    <h1>PHOTO UPLOAD</h1>
+    <p> <%= contactContent %> </p>
+    <hr>
+    <div>
+        <form action="/imageupload" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="name">Image Title</label>
+                <input class="form-control-inline" type="text" id="name" placeholder="Name"
+                       value="" name="name" required>
+            </div>
+            <div>
+                <label for="desc">Image Description</label>
+                <textarea class="form-control" id="desc" name="desc" value="" rows="2"
+                          placeholder="Description" required>
+                </textarea>
+            </div>
+            <div>
+                <label for="image">Upload Image</label>
+                <input class="form-control" type="file" id="image"
+                       name="image" value="">
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <hr>
+
+    <h1>Uplaoded Images</h1>
+
+    <div>
+        <% items.forEach(function(image) { %>
+        <div>
+            <div>
+                <div>
+                    <h5><%= image.name %></h5>
+                    <p><%= image.desc %></p>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+
+
+
+<%- include("partials/footer"); -%>
