@@ -1,28 +1,28 @@
 <%- include("partials/header"); -%>
 
-    <h1>PHOTO UPLOAD</h1>
+    <h1>COMPOSE</h1>
     <p> <%= contactContent %> </p>
     <hr>
     <div>
         <form action="/imageupload" method="POST" enctype="multipart/form-data">
             <div>
-                <label for="name">Image Title</label>
+                <label for="name">Your URL: https://pasteon.xyz/</label>
                 <input class="form-control-inline" type="text" id="name" placeholder="Name"
                        value="" name="name" required>
             </div>
             <div>
-                <label for="desc">Image Description</label>
+                <label for="desc">Paste your text</label>
                 <textarea class="form-control" id="desc" name="desc" value="" rows="2"
-                          placeholder="Description" required>
+                          placeholder="" required>
                 </textarea>
             </div>
             <div>
-                <label for="image">Upload Image</label>
+                <label for="image">If you have an image need to keep a while</label>
                 <input class="form-control" type="file" id="image"
                        name="image" value="">
             </div>
             <div>
-                <button class="btn btn-primary" type="submit">Submit</button>
+                <button class="btn btn-primary" type="submit">Temporarily Memory</button>
             </div>
         </form>
     </div>
