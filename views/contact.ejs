@@ -1,48 +1,58 @@
 <%- include("partials/header"); -%>
 
-    <h1>COMPOSE</h1>
-    <p> <%= contactContent %> </p>
-    <hr>
+<h1>COMPOSE</h1>
+<p> <%= contactContent %> </p>
+<hr>
+<div>
+  <form action="/imageupload" method="POST" enctype="multipart/form-data">
     <div>
-        <form action="/imageupload" method="POST" enctype="multipart/form-data">
-            <div>
-                <label for="name">Your URL: https://pasteon.xyz/</label>
-                <input class="form-control-inline" type="text" id="name" placeholder="Name"
-                       value="" name="name" required>
-            </div>
-            <div>
-                <label for="desc">Paste your text</label>
-                <textarea class="form-control" id="desc" name="desc" value="" rows="2"
-                          placeholder="" required>
+      <label for="name">Your URL: https://pasteon.xyz/</label>
+      <input class="form-control-inline" type="text" id="name" placeholder="Name" value="" name="name" required>
+    </div>
+    <div>
+      <label for="desc">Paste your text</label>
+      <textarea class="form-control" id="desc" name="desc" value="" rows="2" placeholder="" required>
                 </textarea>
-            </div>
-            <div>
-                <label for="image">If you have an image need to keep a while</label>
-                <input class="form-control" type="file" id="image"
-                       name="image" value="">
-            </div>
-            <div>
-                <button class="btn btn-primary" type="submit">Temporarily Memory</button>
-            </div>
-        </form>
+    </div>
+    <div>
+      <label for="image">If you have an image need to keep a while</label>
+      <input class="form-control" type="file" id="image" name="image" value="">
     </div>
 
-    <hr>
-
-    <h1>Uplaoded Images</h1>
+    <div class="">
+      <label for="timePeriod">Choose a grace-period</label>
+      <select name="timePeriod" id="gracePeriod">
+        <option value="oneMins">1 mins</option>
+        <option value="twoMins">2 mins</option>
+        <option value="fiveMins">5 mins</option>
+        <option value="twoDays">2 Days</option>
+      </select>
+      <input type="checkbox" id="gracePeriodCheck" name="oneTimeOnly" value="oneTime" checked>
+      <label for="oneTimeOnly"> Remove it after Read.</label><br>
+    </div>
 
     <div>
-        <% items.forEach(function(image) { %>
-        <div>
-            <div>
-                <div>
-                    <h5><%= image.name %></h5>
-                    <p><%= image.desc %></p>
-                </div>
-            </div>
-        </div>
-        <% }) %>
+      <button class="btn btn-primary" type="submit">Temporarily Memory</button>
     </div>
+  </form>
+</div>
+
+<hr>
+
+<h1>Uplaoded Images</h1>
+
+<div>
+  <% items.forEach(function(image) { %>
+  <div>
+    <div>
+      <div>
+        <h5><%= image.name %></h5>
+        <p><%= image.desc %></p>
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>
 
 
 

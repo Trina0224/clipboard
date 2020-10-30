@@ -80,7 +80,12 @@ const imageSchema = new mongoose.Schema({
   timeStamp:{
     type: String,
     required: [true,"timeStamp is required."]
-  }
+  },
+  timePeriod: {
+    type: String,
+    required: [true, "time period field is required."]
+  },
+  oneTimeOnly: String
 
 });
 //Image is a model which has a schema imageSchema
@@ -187,14 +192,18 @@ app.post('/imageupload', upload.single('image'), (req, res, next) => {
               data: fs.readFileSync(path.join(__dirname + '/public/img/' + req.file.filename)),
               contentType: 'image/png'
           },
-          timeStamp: current
+          timeStamp: current,
+          timePeriod: req.body.timePeriod,
+          oneTimeOnly: req.body.oneTimeOnly
         }
     }
     else{
       var obj = {
           name: req.body.name,
           desc: req.body.desc,
-          timeStamp: current
+          timeStamp: current,
+          timePeriod: req.body.timePeriod,
+          oneTimeOnly: req.body.oneTimeOnly
           }
     }
 
@@ -233,7 +242,7 @@ app.get("/:postId", function(req, res){
     ImgModel.findOne({name: requestedPostId}, function(err, img){
       console.log(err);
       if(!err){
-        if(img.img){
+        if(img.img  && img.oneTimeOnly == ""){
           res.render("post", {
             title: img.name,
             content: img.desc,
@@ -241,8 +250,45 @@ app.get("/:postId", function(req, res){
             _id: img._id
             });
         }
-        else{ //no image.
+        else{
+            if(img.img && img.oneTimeOnly == "oneTime"){
+            //has image, but need to remove this collection.
+            ImgModel.findByIdAndRemove(img._id, function(err) {
+              if (err) {
+                console.log(err);
+              } else {
+                res.render("post", {
+                  title: img.name,
+                  content: img.desc,
+                  image:img,
+                  _id: "This is one time reading. The record is removed."
+                  });
+              }
+            });
+          }else{//no image
+            if(img.oneTimeOnly == "oneTime"){
+              ImgModel.findByIdAndRemove(img._id, function(err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.render("post", {
+                    title: img.name,
+                    content: img.desc,
+                    _id: "This is one time reading. The record is removed."
+                    });
+                }
+              });
+            }
+            else{
+              res.render("post", {
+                title: img.name,
+                content: img.desc,
+                image:null,
+                _id: img._id
+                });
+            }
 
+          }
         }
       }
     })
@@ -252,6 +298,7 @@ app.get("/:postId", function(req, res){
         res.render("error", {errorContent: errorContent});
 
     });
+
 
 });
 
