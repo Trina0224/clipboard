@@ -5,6 +5,7 @@ RGB(222, 228, 225), RGB(124, 128, 123), RGB(184, 58, 28), RGB(21, 16, 12)   */
 html {
   min-height: 100%;
   position: relative;
+  color: RGB(21, 16, 12);
 }
 
 .container-fluid {
@@ -48,6 +49,7 @@ html {
 
 body{
   background-color: RGB(222, 228, 225);
+  color: RGB(21, 16, 12);
 }
 
 /* a {
@@ -55,4 +57,10 @@ body{
 } */
 img{
   width: 300px;
+}
+
+
+.disabled
+{
+   display:none;
 }

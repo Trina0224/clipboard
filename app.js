@@ -83,7 +83,7 @@ const imageSchema = new mongoose.Schema({
   },
   timePeriod: {
     type: String,
-    required: [true, "time period field is required."]
+    //required: [true, "time period field is required."]
   },
   oneTimeOnly: String
 
@@ -100,7 +100,7 @@ const ImgModel = mongoose.model("Image", imageSchema);
 
 let storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, 'public/img') //路徑要真的有
+		cb(null, 'public/img') //truly path.
 	},
 	filename: (req, file, cb) => {
     const ext = file.mimetype.split('/')[1]; //which looks like 'image/jpeg'
@@ -109,7 +109,7 @@ let storage = multer.diskStorage({
 	}
 });
 
-const multerFilter = (req, file, cb) => { //確定是jpeg...
+const multerFilter = (req, file, cb) => { //is iamge?...
   if (file.mimetype.startsWith('image')) {
     cb(null, true);
   } else {
@@ -182,6 +182,7 @@ app.post("/compose", function(req, res){
 app.post('/imageupload', upload.single('image'), (req, res, next) => {
 //app.post('/imageupload', upload2.single('image'), (req, res, next) => {
     //console.log(__dirname);
+    console.log("saveimagestate");
     console.log(req.body);
     let current= new Date().getTime();
     if(req.body.img){
@@ -235,12 +236,13 @@ app.post("/remove", function(req, res){
 
 app.get("/:postId", function(req, res){
   //const requestedTitle = _.lowerCase(req.params.postName);
-
   const requestedPostId = req.params.postId;
 
     //Post.findOne({_id: requestedPostId}, function(err, post){
     ImgModel.findOne({name: requestedPostId}, function(err, img){
       console.log(err);
+      console.log(`${'img.img' in img}`);
+      console.log(img);
       if(!err){
         if(img.img  && img.oneTimeOnly == ""){
           res.render("post", {
@@ -267,23 +269,23 @@ app.get("/:postId", function(req, res){
             });
           }else{//no image
             if(img.oneTimeOnly == "oneTime"){
+              res.render("postNoImg", {
+                title: img.name,
+                content: img.desc,
+                _id: "This is one time reading. The record is removed."
+                });
               ImgModel.findByIdAndRemove(img._id, function(err) {
                 if (err) {
                   console.log(err);
                 } else {
-                  res.render("post", {
-                    title: img.name,
-                    content: img.desc,
-                    _id: "This is one time reading. The record is removed."
-                    });
+                  ;
                 }
               });
             }
             else{
-              res.render("post", {
+              res.render("postNoImg", {
                 title: img.name,
                 content: img.desc,
-                image:null,
                 _id: img._id
                 });
             }
